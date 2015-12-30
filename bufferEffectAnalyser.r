@@ -1,9 +1,6 @@
 ### 0. preminaries
 
-# 0.1. setting working directory
-setwd("D:/MOBIMO/Data/3-Catalonia/")
-
-# 0.2. loading libraries
+# 0.1. loading libraries
 library(lme4)
 library(ggplot2)
 library(reshape2)
