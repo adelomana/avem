@@ -3,9 +3,8 @@
 # 0.1. loading libraries
 library(lme4)
 library(ggplot2)
-library(reshape2)
 
-# 0.3 defining functions
+# 0.2 defining functions
 model.calculator <- function (fitness.data,working.species,label){        
   
   # f.1. defining the species-specific data for the model 
