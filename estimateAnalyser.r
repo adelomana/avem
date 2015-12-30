@@ -1,23 +1,16 @@
-### 0. preminaries
+### this script computes the estimate effect of habitat and productivity for each species
 
-# 0.1. setting working directo
-setwd("D:/MOBIMO/Data/3-Catalonia/")
-
-# 0.2. loading libraries
+                                        # 0.1. user defined paths
+setwd <- getwd()
+pfem <- read.csv("data/P3-HS_thre_AUC.csv")
+pjuv <- read.csv("data/P4-HS_thre_AUC.csv")
+                                        # 0.2. loading libraries
 library(lme4)
-library(ggplot2)
-library(reshape2)
+                                        # 0.3. reading the data
 
-# 0.3. reading the data
-pfem <- read.csv("NewModels-Results/P3-HS_thre_AUC.csv")
-
-### 1. manipulating the data
-
-# 1.1. manipulating brood patch variable
-# Brood patch code 1,2,3,4,5,6 replaced by 1 - Yes brood patch present
-# Brood patch code 7,9,0 replaced by 0 - No brood patch present
-pfem["Brood_patch"] <- 0  # Creates a new column full of 0
-pfem$Brood_patch[pfem$BroodPatch <= 6 & pfem$BroodPatch > 0] <- 1  
+                                        # MAIN
+                                        # 1. defining the species
+species.list <- levels(pfem$Species) 
 
 # 1.2. converting to log scale the number of birds
 pfem$logNtotc <- log(pfem$Ntot+1) - mean(log(pfem$Ntot+1)) 

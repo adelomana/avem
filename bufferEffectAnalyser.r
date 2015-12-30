@@ -5,7 +5,6 @@ pfem <- read.csv("data/P3-HS_thre_AUC.csv")
 pjuv <- read.csv("data/P4-HS_thre_AUC.csv")
                                         # 0.2. loading libraries
 library(lme4)
-library(ggplot2)
                                         # 0.3 defining functions
 model.calculator <- function (fitness.data,working.species,label){
                                         # f.1. defining the species-specific data for the model 
