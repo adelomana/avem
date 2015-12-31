@@ -1,5 +1,4 @@
 ### this script computes the estimate effect of habitat and productivity for each species
-
                                         # 0.1. user defined paths
 setwd <- getwd()
 pfem <- read.csv("data/P3-HS_thre_AUC.csv")
@@ -12,7 +11,7 @@ source("commonFunctions.r")
 species.list <- levels(pfem$Species)
 species.pfem.models <- data.frame()
 species.juv.models <- data.frame()
-                                        # for each species
+                                        # for each species 
 for(i in 1:length(species.list)){
     working.species <- species.list[i]
     print(working.species)
@@ -44,9 +43,12 @@ for (indexBuffer in  1:length(bufferNames)){
         estimate.errors <- c(estimate.errors,c(estimate.error))
         plotLabels <- c(plotLabels,c(species.list[i]))
     }
-    estimates <- estimates[order(estimates, decreasing=TRUE)]
-    estimate.errors <- estimate.errors[order(estimates, decreasing=TRUE)]
-    plotLabels <- plotLabels[order(estimates, decreasing=TRUE)]
+
+    orderedIndexes <- order(estimates,decreasing=TRUE)
+    estimates <- estimates[orderedIndexes]
+    estimate.errors <- estimate.errors[orderedIndexes]
+    plotLabels <- plotLabels[orderedIndexes]
+    
     xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors))
     thexlab = bufferTag
     theylab = ""
@@ -69,9 +71,12 @@ for (indexBuffer in  1:length(bufferNames)){
         estimate.errors <- c(estimate.errors,c(estimate.error))
         plotLabels <- c(plotLabels,c(species.list[i]))
     }
-    estimates <- estimates[order(estimates, decreasing=TRUE)]
-    estimate.errors <- estimate.errors[order(estimates, decreasing=TRUE)]
-    plotLabels <- plotLabels[order(estimates, decreasing=TRUE)]
+
+    orderedIndexes <- order(estimates,decreasing=TRUE)
+    estimates <- estimates[orderedIndexes]
+    estimate.errors <- estimate.errors[orderedIndexes]
+    plotLabels <- plotLabels[orderedIndexes]
+
     xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors))
     thexlab = bufferTag
     theylab = ""
