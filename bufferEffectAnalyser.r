@@ -9,8 +9,8 @@ source("commonFunctions.r")
                                         # 1. defining the species
 species.list <- levels(pfem$Species)
                                         # for each species
-#for(i in 1:length(species.list)){
-for(i in 1:1){
+for(i in 1:length(species.list)){
+#for(i in 1:1){
     working.species <- species.list[i]
     print(working.species)
                                         # 2. computing model
@@ -56,7 +56,7 @@ for(i in 1:1){
     segments(x+shift,y.juv-z.juv,x+shift,y.juv+z.juv,lwd=2,col="red")
     segments(x+shift,y.juv-2*z.juv,x+shift,y.juv+2*z.juv,lwd=1,col="red")
 
-    legend(18,the.ylim[2],c("pfem","pjuv"),lty=c(1,1),lwd=c(2.5,2.5),pch=20,col=c("blue","red"))
+    legend(18,the.ylim[2],c("pfem","juv"),lty=c(1,1),lwd=c(2.5,2.5),pch=20,col=c("blue","red"))
     points(x-shift,w.pfem,col="blue",pch=8)
     points(x+shift,w.juv,col="red",pch=8)
     

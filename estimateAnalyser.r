@@ -13,7 +13,8 @@ species.list <- levels(pfem$Species)[1:2]
 species.pfem.models <- data.frame()
 species.juv.models <- data.frame()
                                         # for each species
-for(i in 1:length(species.list)){
+#for(i in 1:length(species.list)){
+for(i in 1:2){
     working.species <- species.list[i]
     print(working.species)
                                         # 2. computing model
@@ -32,31 +33,30 @@ bufferNames <- colnames(pfem)[9:14]
 bufferNames <- colnames(pfem)[9:10]
 for (indexBuffer in  1:length(bufferNames)){
     bufferTag <- bufferNames[indexBuffer]
-                                        # 4.1. defining plot general variables
-    plotLabels <- c()
-    estimates <- c()
-    estimateErrors <- c()
-    figureFileName <- paste("estimates_",bufferTag,".pdf",sep="")
-    print(figureFileName)
+                                        # 4.1. defining the pfem plot
+    figureFileName <- paste("estimates_pfem_",bufferTag,".pdf",sep="")
     pdf(figureFileName)
+    for(i in 1:2){
+        estimates <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$estimates
+        print(estimates)
+    }
+    print("hola")
 
-
-
-    WORKING LINE
-    for (i in  1:length(allSpecies)){
+    
+    #for (i in  1:length(allSpecies)){
     # 3.2.1. defining the species-specific data for the model 
-    workingSpecies <- allSpecies[i]
-    workingData <- pfem[pfem$Species == workingSpecies,]
+    #workingSpecies <- allSpecies[i]
+    #workingData <- pfem[pfem$Species == workingSpecies,]
     # 3.2.2. building the model
-    mod <- glmer(Brood_patch ~ centredHS * logNtotc + (1 | CES_CODE), family = binomial, data = workingData)
+    #mod <- glmer(Brood_patch ~ centredHS * logNtotc + (1 | CES_CODE), family = binomial, data = workingData)
     # 3. checking the model, oh yeah 
-    drop1(mod,test="Chisq")
+    #drop1(mod,test="Chisq")
     # 4. extracting the estimates and its error and appending the species-specific values into the corresponding list 
-    mean <- as.data.frame(summary(mod)$coefficients)$Estimate[2]
-    se <- as.data.frame(summary(mod)$coefficients)$Std.[2]
-    plotLabels <- c(plotLabels,c(workingSpecies))
-    estimates <- c(estimates,c(mean))
-    estimateErrors <- c(estimateErrors,c(se))
+    #mean <- as.data.frame(summary(mod)$coefficients)$Estimate[2]
+    #se <- as.data.frame(summary(mod)$coefficients)$Std.[2]
+    #plotLabels <- c(plotLabels,c(workingSpecies))
+    #estimates <- c(estimates,c(mean))
+    #estimateErrors <- c(estimateErrors,c(se))
     #print(summary(mod))
     #print(mean)
     #print(se)
