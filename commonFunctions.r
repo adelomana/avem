@@ -25,6 +25,7 @@ model.calculator <- function (fitness.data,working.species,label){
                                         # f.5. defining the variables to fill up
     estimates <- c()
     estimate.errors <- c()
+    pvalues <- c()
                                         # f.6. iterating over the buffer values
     bufferNames <- colnames(species.data)[9:14]
     for (indexBuffer in  1:length(bufferNames)){  
@@ -33,13 +34,15 @@ model.calculator <- function (fitness.data,working.species,label){
         raw.habitat <- species.data[bufferTag][,1] 
         habitat <- raw.habitat - mean(raw.habitat)
                                         # f.6.2. building the model
-        mod <- glmer(productivity ~ habitat * numberOfBirds + (1 | stationsFactor),family=binomial)   
+        mod <- glmer(productivity ~ habitat * numberOfBirds + (1 | stationsFactor),family=binomial)
                                         # f.6.3. extracting the estimates and its error and appending the species-specific values into the corresponding list 
         the.mean <- as.data.frame(summary(mod)$coefficients)$Estimate[2]
         the.se <- as.data.frame(summary(mod)$coefficients)$Std.[2]
+        the.pvalue <- as.data.frame(summary(mod)$coefficients)$Pr[2]
         estimates <- c(estimates,c(the.mean))
         estimate.errors <- c(estimate.errors,c(the.se))
+        pvalues <- c(pvalues,c(the.pvalue))
     }
                                         # f.7. final returning estimates for each species                       
-    return(data.frame(estimates,estimate.errors))
+    return(data.frame(estimates,estimate.errors,pvalues))
 } 

@@ -4,42 +4,46 @@
 setwd <- getwd()
 pfem <- read.csv("data/P3-HS_thre_AUC.csv")
 pjuv <- read.csv("data/P4-HS_thre_AUC.csv")
-                                        # 0.2. loading libraries
-library(lme4)
-                                        # 0.3. reading the data
+                                        # 0.2. loading common functions
+source("commonFunctions.r")
 
                                         # MAIN
-                                        # 1. defining the species
-species.list <- levels(pfem$Species) 
-
-# 1.2. converting to log scale the number of birds
-pfem$logNtotc <- log(pfem$Ntot+1) - mean(log(pfem$Ntot+1)) 
-
-# 1.3. defining the species names
-allSpecies <- levels(pfem$Species)
-
-### 2. building graphs for each buffer size
+                                        # 1. defining some initial variables
+species.list <- levels(pfem$Species)[1:2]
+species.pfem.models <- data.frame()
+species.juv.models <- data.frame()
+                                        # for each species
+for(i in 1:length(species.list)){
+    working.species <- species.list[i]
+    print(working.species)
+                                        # 2. computing model
+    print("computing model for pfem...")
+    model.pfem <- model.calculator(fitness.data=pfem,working.species,label="patch")
+    print(model.pfem)
+    print("computing model for juv...")
+    model.juv <- model.calculator(fitness.data=pjuv,working.species,label="age")
+    print(model.juv)
+                                        # 3. appending the computed models into a list
+    species.pfem.models <- rbind( species.pfem.models, data.frame(working.species,model.pfem) )
+    species.juv.models <- rbind( species.juv.models, data.frame(working.species,model.juv) )
+}
+                                        # 4. building a figure for each buffer size
 bufferNames <- colnames(pfem)[9:14]
-#bufferNames <- colnames(pfem)[9:9]
+bufferNames <- colnames(pfem)[9:10]
 for (indexBuffer in  1:length(bufferNames)){
-  bufferTag <- bufferNames[indexBuffer]
-  
-  # 2.1. centering the distribution of habitat
-  distribution <- pfem[bufferTag][,1] 
-  pfem$centredHS <- distribution - mean(distribution)
- 
-  ### 3. computing the models for each buffer
-  
-  ### 3.1. defining genaral variables
-  plotLabels <- c()
-  estimates <- c()
-  estimateErrors <- c()
-  figureFileName <- paste("estimates_",bufferTag,".pdf",sep="")
-  print(figureFileName)
-  pdf(figureFileName)
-  
-  # 3.2. computing the model for each species
-  for (i in  1:length(allSpecies)){
+    bufferTag <- bufferNames[indexBuffer]
+                                        # 4.1. defining plot general variables
+    plotLabels <- c()
+    estimates <- c()
+    estimateErrors <- c()
+    figureFileName <- paste("estimates_",bufferTag,".pdf",sep="")
+    print(figureFileName)
+    pdf(figureFileName)
+
+
+
+    WORKING LINE
+    for (i in  1:length(allSpecies)){
     # 3.2.1. defining the species-specific data for the model 
     workingSpecies <- allSpecies[i]
     workingData <- pfem[pfem$Species == workingSpecies,]
@@ -58,20 +62,8 @@ for (indexBuffer in  1:length(bufferNames)){
     #print(se)
     #print("next model")
   }     
-  
-  # 3.3. sorting the species for the plot
-  estimates <- estimates[order(estimates, decreasing=TRUE)]
-  estimateErrors <- estimateErrors[order(estimates, decreasing=TRUE)]
-  plotLabels <- plotLabels[order(estimates, decreasing=TRUE)]
-  # 4. defining the plot for each buffer
-  xlim = c(min(estimates - 2*estimateErrors), max(estimates + 2*estimateErrors))
-  thexlab = bufferTag
-  theylab = ""
-  plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=xlim,yaxt="n")
-  abline(v=0, col = "grey50")
-  segments( estimates-estimateErrors, length(estimates):1, estimates+estimateErrors, length(estimates):1, lwd = 2)
-  segments( estimates-2*estimateErrors, length(estimates):1, estimates+2*estimateErrors, length(estimates):1, lwd = 1)
-  axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
-  ### closing the graph
-  dev.off()
-}
+
+
+    
+
+    dev.off()
