@@ -1,0 +1,452 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> ### this script computes the estimate effect of habitat and productivity for each species
+>                                         # 0.1. user defined paths
+> setwd <- getwd()
+> pfem <- read.csv("data/P3-HS_thre_AUC.csv")
+> juv <- read.csv("data/P4-HS_thre_AUC.csv")
+>                                         # 0.2. loading common functions
+> source("commonFunctions.r")
+> 
+>                                         # MAIN
+>                                         # 1. defining some initial variables
+> species.list <- levels(pfem$Species)
+> species.pfem.models <- data.frame()
+> species.juv.models <- data.frame()
+>                                         # for each species 
+> for(i in 1:length(species.list)){
++     working.species <- species.list[i]
++     print(working.species)
++                                         # 2. computing model
++     print("computing model for pfem...")
++     model.pfem <- model.calculator(fitness.data=pfem,working.species,label="patch")
++     print(model.pfem)
++     print("computing model for juv...")
++     model.juv <- model.calculator(fitness.data=juv,working.species,label="age")
++     print(model.juv)
++                                         # 3. appending the computed models into a list
++     species.pfem.models <- rbind( species.pfem.models, data.frame(working.species,model.pfem) )
++     species.juv.models <- rbind( species.juv.models, data.frame(working.species,model.juv) )
++ }
+[1] "acraru"
+[1] "computing model for pfem..."
+    estimates estimate.errors     pvalues
+1  0.01333488      0.03870541 0.730453402
+2 -0.10223922      0.04558279 0.024901022
+3  0.01225345      0.09857190 0.901070012
+4  0.31729095      0.13179891 0.016067142
+5  0.19536535      0.09207429 0.033852603
+6  0.15353212      0.04773230 0.001297535
+[1] "computing model for juv..."
+     estimates estimate.errors    pvalues
+1 -0.003910736      0.05628261 0.94460445
+2  0.110542157      0.07927194 0.16317641
+3  0.044250667      0.09960948 0.65686796
+4 -0.072467713      0.12310332 0.55608004
+5 -0.147024918      0.11472335 0.19999687
+6 -0.236851924      0.11498480 0.03941248
+[1] "acrsci"
+[1] "computing model for pfem..."
+   estimates estimate.errors    pvalues
+1 0.02847145      0.04292004 0.50709975
+2 0.09557554      0.06061107 0.11482637
+3 0.08696562      0.08060644 0.28063595
+4 0.17490408      0.10933040 0.10964842
+5 0.25748795      0.13426444 0.05514054
+6 0.23104200      0.11016537 0.03597332
+[1] "computing model for juv..."
+   estimates estimate.errors    pvalues
+1 0.06200693      0.03266054 0.05762666
+2 0.12698280      0.05566595 0.02253912
+3 0.14512336      0.06867551 0.03458580
+4 0.12610008      0.08911833 0.15707625
+5 0.16523677      0.12958276 0.20225803
+6 0.17297339      0.14402911 0.22976622
+[1] "aegcau"
+[1] "computing model for pfem..."
+   estimates estimate.errors    pvalues
+1 0.01432278     0.006825885 0.03587835
+2 0.01337460     0.007364960 0.06937384
+3 0.01312195     0.007559103 0.08257917
+4 0.03531013     0.030223511 0.24268574
+5 0.03827936     0.032001816 0.23163334
+6 0.05144675     0.033386273 0.12332768
+[1] "computing model for juv..."
+     estimates estimate.errors   pvalues
+1 -0.005484885     0.006813367 0.4208091
+2 -0.007794967     0.007664911 0.3091687
+3 -0.007853623     0.008121200 0.3335180
+4 -0.015368735     0.029225388 0.5989790
+5 -0.016594892     0.030806356 0.5901049
+6 -0.018496474     0.033044212 0.5756505
+[1] "carcar"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1  0.002702017      0.03031374 0.9289746
+2 -0.018150446      0.05577982 0.7448825
+3 -0.007455056      0.07590631 0.9217624
+4  0.023753565      0.08455991 0.7787809
+5  0.027472977      0.08570962 0.7485624
+6  0.050138566      0.08901273 0.5732482
+[1] "computing model for juv..."
+   estimates estimate.errors    pvalues
+1 0.06837438      0.02772679 0.01366299
+2 0.08179116      0.04343197 0.05967306
+3 0.09951789      0.05403498 0.06551453
+4 0.08977570      0.06244214 0.15050721
+5 0.05020053      0.06514241 0.44092773
+6 0.02539659      0.06958788 0.71514342
+[1] "carchl"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1 -0.150508124      0.07505832 0.0449400
+2 -0.094104923      0.08911235 0.2909565
+3 -0.069099315      0.12507041 0.5806173
+4 -0.008620202      0.15489119 0.9556180
+5  0.039378564      0.16422308 0.8104954
+6  0.072726215      0.16905890 0.6670627
+[1] "computing model for juv..."
+  estimates estimate.errors     pvalues
+1 0.1037191      0.03912300 0.008022943
+2 0.1365740      0.04911035 0.005419812
+3 0.1949990      0.07284354 0.007429424
+4 0.2749784      0.09096742 0.002504292
+5 0.3030677      0.09794664 0.001973364
+6 0.3239392      0.10166959 0.001441572
+[1] "cerbra"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1 -0.036044377      0.02498416 0.1491080
+2 -0.028875082      0.02449172 0.2384089
+3 -0.009687611      0.02777161 0.7272158
+4 -0.020621018      0.03662223 0.5733847
+5 -0.016010614      0.04190013 0.7023770
+6  0.002474234      0.04818762 0.9590499
+[1] "computing model for juv..."
+     estimates estimate.errors    pvalues
+1  0.062876759      0.02785959 0.02401333
+2  0.041918259      0.02765060 0.12951983
+3 -0.001888211      0.02943804 0.94885726
+4 -0.029358164      0.03923798 0.45433478
+5 -0.021662941      0.04451037 0.62647503
+6  0.003517849      0.05094588 0.94494925
+[1] "cetcet"
+[1] "computing model for pfem..."
+      estimates estimate.errors    pvalues
+1 -0.0304098170      0.02143317 0.15595131
+2 -0.0002246316      0.02425175 0.99260971
+3  0.0056234877      0.03393538 0.86838389
+4  0.0378656855      0.03725713 0.30947034
+5  0.0718666271      0.05306193 0.17561151
+6  0.1086720765      0.06403541 0.08968487
+[1] "computing model for juv..."
+    estimates estimate.errors   pvalues
+1 0.033370379      0.01829567 0.0681597
+2 0.025559580      0.02166233 0.2380363
+3 0.024449956      0.02862537 0.3930297
+4 0.038366185      0.03695695 0.2992087
+5 0.018201862      0.05210088 0.7268205
+6 0.008460278      0.06518138 0.8967279
+[1] "erirub"
+[1] "computing model for pfem..."
+     estimates estimate.errors    pvalues
+1 -0.007404951      0.02563393 0.77267855
+2  0.018920386      0.02990228 0.52690303
+3  0.016687318      0.03173070 0.59895456
+4  0.083382442      0.06090109 0.17095387
+5  0.109815659      0.05769769 0.05700220
+6  0.091759230      0.05576883 0.09989771
+[1] "computing model for juv..."
+    estimates estimate.errors     pvalues
+1 0.007033599      0.01734991 0.685185792
+2 0.026787913      0.02165087 0.215987922
+3 0.038215161      0.02378490 0.108120553
+4 0.057805796      0.04336395 0.182519289
+5 0.122184806      0.04646036 0.008541693
+6 0.138249636      0.04701828 0.003278542
+[1] "hippol"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1  0.001341454     0.007599004 0.8598774
+2  0.004980442     0.008907902 0.5760909
+3  0.006830282     0.012738446 0.5918242
+4 -0.003464993     0.018497390 0.8514071
+5 -0.002233512     0.019873341 0.9105163
+6  0.001759684     0.019506122 0.9281188
+[1] "computing model for juv..."
+   estimates estimate.errors   pvalues
+1 0.02147829      0.01907757 0.2602333
+2 0.02696201      0.02423676 0.2659479
+3 0.03688013      0.03123793 0.2377537
+4 0.05246773      0.03986160 0.1880910
+5 0.04395689      0.04035677 0.2760625
+6 0.03000354      0.03955645 0.4481520
+[1] "lusmeg"
+[1] "computing model for pfem..."
+    estimates estimate.errors   pvalues
+1 0.008657830      0.01759240 0.6226241
+2 0.017688807      0.02270247 0.4358868
+3 0.040640974      0.03161466 0.1986140
+4 0.027038099      0.03940683 0.4926329
+5 0.006501671      0.04016520 0.8714057
+6 0.005196504      0.04007260 0.8968218
+[1] "computing model for juv..."
+      estimates estimate.errors   pvalues
+1  0.0005671561      0.01345251 0.9663713
+2 -0.0070520018      0.01808270 0.6965469
+3 -0.0285625302      0.02841770 0.3148505
+4 -0.0444034155      0.03256174 0.1726720
+5 -0.0478144763      0.03235683 0.1394816
+6 -0.0469166006      0.03196823 0.1422127
+[1] "parcae"
+[1] "computing model for pfem..."
+   estimates estimate.errors    pvalues
+1 0.01585187     0.009427648 0.09268059
+2 0.01835059     0.009323932 0.04905454
+3 0.02121610     0.009975638 0.03343741
+4 0.05869643     0.066525998 0.37761022
+5 0.10570892     0.064530800 0.10139754
+6 0.13165174     0.057459247 0.02195073
+[1] "computing model for juv..."
+    estimates estimate.errors     pvalues
+1 -0.01127699     0.007820780 0.149323119
+2 -0.01527661     0.007959072 0.054934298
+3 -0.02400919     0.008421419 0.004358652
+4 -0.10528234     0.047138371 0.025517687
+5 -0.09828067     0.049860320 0.048710166
+6 -0.06965236     0.049910081 0.162847967
+[1] "parmaj"
+[1] "computing model for pfem..."
+   estimates estimate.errors      pvalues
+1 0.04274564      0.02310107 0.0642595461
+2 0.04161409      0.02352689 0.0769291838
+3 0.03294483      0.04053622 0.4163752387
+4 0.73283766      0.22734031 0.0012662233
+5 0.87139721      0.23807627 0.0002520580
+6 0.80956962      0.21115915 0.0001261115
+[1] "computing model for juv..."
+     estimates estimate.errors   pvalues
+1  0.001039847      0.01040466 0.9203916
+2  0.002221188      0.01062570 0.8344177
+3 -0.003922784      0.01654072 0.8125333
+4 -0.016339661      0.08492780 0.8474330
+5  0.027413079      0.09372926 0.7699266
+6  0.050751356      0.09503567 0.5933247
+[1] "pasdom"
+[1] "computing model for pfem..."
+     estimates estimate.errors    pvalues
+1 -0.132331790      0.06232528 0.03373341
+2 -0.107506443      0.08103287 0.18460738
+3  0.005413175      0.11726329 0.96318067
+4 -0.045586448      0.14407574 0.75169427
+5  0.031509962      0.13726309 0.81843455
+6  0.039403419      0.13453101 0.76960264
+[1] "computing model for juv..."
+     estimates estimate.errors   pvalues
+1 -0.031822338      0.03719114 0.3921953
+2 -0.008449042      0.04821045 0.8608806
+3 -0.082548076      0.07173550 0.2498440
+4 -0.124013855      0.09001048 0.1682739
+5 -0.093610287      0.09051940 0.3010678
+6 -0.077509094      0.09374135 0.4083278
+[1] "serser"
+[1] "computing model for pfem..."
+    estimates estimate.errors   pvalues
+1 -0.04452942      0.07735219 0.5648375
+2 -0.01919797      0.08116400 0.8130191
+3 -0.05777887      0.10038908 0.5649198
+4  0.09511065      0.16775916 0.5707498
+5  0.12900444      0.16130628 0.4238566
+6  0.15379927      0.16285628 0.3449722
+[1] "computing model for juv..."
+    estimates estimate.errors    pvalues
+1 -0.03648990      0.03734607 0.32853215
+2 -0.05719807      0.04077738 0.16070895
+3 -0.05309173      0.04716271 0.26028656
+4 -0.18886935      0.11303509 0.09474315
+5 -0.19064077      0.11876878 0.10846254
+6 -0.17647913      0.12649126 0.16295906
+[1] "sylala"
+[1] "computing model for pfem..."
+   estimates estimate.errors   pvalues
+1 0.08603157       0.0829919 0.2999101
+2 0.14174150       0.1017546 0.1636279
+3 0.13353812       0.1224722 0.2755568
+4 0.24465080       0.1804644 0.1752030
+5 0.35918077       0.2205833 0.1034565
+6 0.37610818       0.2331327 0.1066838
+[1] "computing model for juv..."
+   estimates estimate.errors      pvalues
+1 0.09498062      0.02396756 7.405022e-05
+2 0.10413634      0.02815341 2.165454e-04
+3 0.12540256      0.04009167 1.760627e-03
+4 0.21305985      0.06111747 4.901711e-04
+5 0.29930840      0.08484346 4.190725e-04
+6 0.27177336      0.08851201 2.137230e-03
+[1] "sylatr"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1  0.004543420     0.007233703 0.5299446
+2  0.012271158     0.007825800 0.1168721
+3  0.008441503     0.014324620 0.5556598
+4 -0.077557871     0.056784158 0.1719903
+5 -0.089093095     0.063099923 0.1579686
+6  0.012834538     0.072795861 0.8600515
+[1] "computing model for juv..."
+    estimates estimate.errors    pvalues
+1 0.002802136     0.008621313 0.74516265
+2 0.001635358     0.009391043 0.86175531
+3 0.013247232     0.014797304 0.37065542
+4 0.127142472     0.051940487 0.01437118
+5 0.142578224     0.060848716 0.01912123
+6 0.156262241     0.068101651 0.02175926
+[1] "sylcan"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1 -0.008514697      0.03006364 0.7770063
+2 -0.002954440      0.03235977 0.9272544
+3 -0.018202732      0.03662622 0.6191987
+4 -0.019134577      0.05308761 0.7185227
+5 -0.036673858      0.06234652 0.5563805
+6 -0.034932476      0.06214878 0.5740627
+[1] "computing model for juv..."
+    estimates estimate.errors   pvalues
+1 -0.02921780      0.03084547 0.3435207
+2  0.00564362      0.03298502 0.8641479
+3  0.01181865      0.03875309 0.7603867
+4 -0.00193472      0.05081946 0.9696315
+5 -0.01364152      0.05815330 0.8145358
+6 -0.02037568      0.07114159 0.7745639
+[1] "trotro"
+[1] "computing model for pfem..."
+     estimates estimate.errors   pvalues
+1 -0.013448148     0.019752552 0.4959785
+2 -0.008235307     0.007161956 0.2501980
+3 -0.009356258     0.042604272 0.8261761
+4  0.006045910     0.062002148 0.9223204
+5  0.045890817     0.074590684 0.5383994
+6  0.076743227     0.085844771 0.3713343
+[1] "computing model for juv..."
+      estimates estimate.errors    pvalues
+1 -0.0100649346     0.008378673 0.22965177
+2 -0.0009890021     0.004675064 0.83245939
+3 -0.0430649484     0.022914147 0.06018930
+4 -0.0681450578     0.033284115 0.04062130
+5 -0.0651371655     0.038511372 0.09076523
+6 -0.0474385644     0.044538347 0.28682285
+[1] "turmer"
+[1] "computing model for pfem..."
+    estimates estimate.errors    pvalues
+1 0.004598991      0.01468645 0.75417041
+2 0.010219030      0.01477436 0.48914249
+3 0.024916104      0.10474282 0.81197504
+4 0.181033428      0.20061634 0.36685172
+5 0.399200071      0.24822129 0.10778204
+6 0.376650357      0.22885658 0.09980656
+[1] "computing model for juv..."
+   estimates estimate.errors     pvalues
+1 0.01795218      0.01006027 0.074348432
+2 0.01826010      0.01048982 0.081728186
+3 0.05359660      0.06499076 0.409553131
+4 0.08865695      0.10752838 0.409656578
+5 0.24873655      0.13776819 0.071000906
+6 0.39370668      0.14669632 0.007278605
+>                                         # 4. building a figure for each buffer size
+> bufferNames <- colnames(pfem)[9:14]
+> for (indexBuffer in  1:length(bufferNames)){
++     bufferTag <- bufferNames[indexBuffer]
++                                         # 4.1. defining the pfem plot
++     figureFileName <- paste("figures/estimates_pfem_",bufferTag,".pdf",sep="")
++     pdf(figureFileName)
++     estimates <- c()
++     estimate.errors <- c()
++     plotLabels <- c()
++     w <- c()
++     for(i in 1:length(species.list)){
++         estimate <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$estimates[indexBuffer]
++         estimates <- c(estimates,c(estimate))
++         estimate.error <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$estimate.errors[indexBuffer]
++         estimate.errors <- c(estimate.errors,c(estimate.error))
++         plotLabels <- c(plotLabels,c(species.list[i]))
++         pvalue <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$pvalues[indexBuffer]
++         w <- c(w,c(pvalue))
++     }
++ 
++     orderedIndexes <- order(estimates,decreasing=TRUE)
++     estimates <- estimates[orderedIndexes]
++     estimate.errors <- estimate.errors[orderedIndexes]
++     plotLabels <- plotLabels[orderedIndexes]
++     w <- w[orderedIndexes] 
++     
++     the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
++     thexlab = bufferTag
++     theylab = ""
++     plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="pfem")
++     abline(v=0, col = "grey50")
++     segments( estimates-estimate.errors, length(estimates):1, estimates+estimate.errors, length(estimates):1, lwd = 2)
++     segments( estimates-2*estimate.errors, length(estimates):1, estimates+2*estimate.errors, length(estimates):1, lwd = 1)
++     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
++ 
++     z <- 0
++     z[w < 0.05] <- the.xlim[2]-0.05*the.xlim[2]
++     z[w >= 0.05] <- 100
++     points(z,length(estimates):1,pch=8)
++ 
++     dev.off()
++                                         # 4.2. defining the juv plot
++     figureFileName <- paste("figures/estimates_juv_",bufferTag,".pdf",sep="")
++     pdf(figureFileName)
++     estimates <- c()
++     estimate.errors <- c()
++     plotLabels <- c()
++     w <- c()
++     for(i in 1:length(species.list)){
++         estimate <- species.juv.models[species.juv.models$working.species == species.list[i],]$estimates[indexBuffer]
++         estimates <- c(estimates,c(estimate))
++         estimate.error <- species.juv.models[species.juv.models$working.species == species.list[i],]$estimate.errors[indexBuffer]
++         estimate.errors <- c(estimate.errors,c(estimate.error))
++         plotLabels <- c(plotLabels,c(species.list[i]))
++         pvalue <- species.juv.models[species.juv.models$working.species == species.list[i],]$pvalues[indexBuffer]
++         w <- c(w,c(pvalue))
++     }
++ 
++     orderedIndexes <- order(estimates,decreasing=TRUE)
++     estimates <- estimates[orderedIndexes]
++     estimate.errors <- estimate.errors[orderedIndexes]
++     plotLabels <- plotLabels[orderedIndexes]
++     w <- w[orderedIndexes] 
++ 
++     the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
++     thexlab = bufferTag
++     theylab = ""
++     plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="juv")
++     abline(v=0, col = "grey50")
++     segments( estimates-estimate.errors, length(estimates):1, estimates+estimate.errors, length(estimates):1, lwd = 2)
++     segments( estimates-2*estimate.errors, length(estimates):1, estimates+2*estimate.errors, length(estimates):1, lwd = 1)
++     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
++ 
++     z <- 0
++     z[w < 0.05] <- the.xlim[2]-0.05*the.xlim[2]
++     z[w >= 0.05] <- 100
++     points(z,length(estimates):1,pch=8)
++     
++     dev.off()
++ }     
+> 

@@ -36,54 +36,74 @@ for (indexBuffer in  1:length(bufferNames)){
     estimates <- c()
     estimate.errors <- c()
     plotLabels <- c()
+    w <- c()
     for(i in 1:length(species.list)){
         estimate <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$estimates[indexBuffer]
         estimates <- c(estimates,c(estimate))
         estimate.error <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$estimate.errors[indexBuffer]
         estimate.errors <- c(estimate.errors,c(estimate.error))
         plotLabels <- c(plotLabels,c(species.list[i]))
+        pvalue <- species.pfem.models[species.pfem.models$working.species == species.list[i],]$pvalues[indexBuffer]
+        w <- c(w,c(pvalue))
     }
 
     orderedIndexes <- order(estimates,decreasing=TRUE)
     estimates <- estimates[orderedIndexes]
     estimate.errors <- estimate.errors[orderedIndexes]
     plotLabels <- plotLabels[orderedIndexes]
+    w <- w[orderedIndexes] 
     
-    xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors))
+    the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
     thexlab = bufferTag
     theylab = ""
-    plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=xlim,yaxt="n",main="pfem")
+    plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="pfem")
     abline(v=0, col = "grey50")
     segments( estimates-estimate.errors, length(estimates):1, estimates+estimate.errors, length(estimates):1, lwd = 2)
     segments( estimates-2*estimate.errors, length(estimates):1, estimates+2*estimate.errors, length(estimates):1, lwd = 1)
     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
+
+    z <- 0
+    z[w < 0.05] <- the.xlim[2]-0.05*the.xlim[2]
+    z[w >= 0.05] <- 100
+    points(z,length(estimates):1,pch=8)
+
     dev.off()
-                                        # 4.1. defining the juv plot
+                                        # 4.2. defining the juv plot
     figureFileName <- paste("figures/estimates_juv_",bufferTag,".pdf",sep="")
     pdf(figureFileName)
     estimates <- c()
     estimate.errors <- c()
     plotLabels <- c()
+    w <- c()
     for(i in 1:length(species.list)){
         estimate <- species.juv.models[species.juv.models$working.species == species.list[i],]$estimates[indexBuffer]
         estimates <- c(estimates,c(estimate))
         estimate.error <- species.juv.models[species.juv.models$working.species == species.list[i],]$estimate.errors[indexBuffer]
         estimate.errors <- c(estimate.errors,c(estimate.error))
         plotLabels <- c(plotLabels,c(species.list[i]))
+        pvalue <- species.juv.models[species.juv.models$working.species == species.list[i],]$pvalues[indexBuffer]
+        w <- c(w,c(pvalue))
     }
 
     orderedIndexes <- order(estimates,decreasing=TRUE)
     estimates <- estimates[orderedIndexes]
     estimate.errors <- estimate.errors[orderedIndexes]
     plotLabels <- plotLabels[orderedIndexes]
+    w <- w[orderedIndexes] 
 
-    xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors))
+    the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
     thexlab = bufferTag
     theylab = ""
-    plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=xlim,yaxt="n",main="juv")
+    plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="juv")
     abline(v=0, col = "grey50")
     segments( estimates-estimate.errors, length(estimates):1, estimates+estimate.errors, length(estimates):1, lwd = 2)
     segments( estimates-2*estimate.errors, length(estimates):1, estimates+2*estimate.errors, length(estimates):1, lwd = 1)
     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
+
+    z <- 0
+    z[w < 0.05] <- the.xlim[2]-0.05*the.xlim[2]
+    z[w >= 0.05] <- 100
+    points(z,length(estimates):1,pch=8)
+    
     dev.off()
 }     
