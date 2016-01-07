@@ -31,6 +31,23 @@ for(i in 1:length(species.list)){
     z.pfem <- model.pfem$estimate.errors
     y.juv <- model.juv$estimates
     z.juv <- model.juv$estimate.errors
+
+    w.pfem <- 0; w.juv <- 0
+    w.pfem[model.pfem$pvalues < 0.05] <- the.ylim[2]-0.05*the.ylim[2]
+    w.pfem[model.pfem$pvalues >= 0.05] <- 100
+    w.juv[model.juv$pvalues < 0.05] <- the.ylim[2]-0.05*the.ylim[2]
+    w.juv[model.juv$pvalues >= 0.05] <- 100
+
+                                        # dealing with less buffers
+    subsetIndexes <- c(1,3,6)
+    x <- x[subsetIndexes]
+    y.pfem <- y.pfem[subsetIndexes]
+    z.pfem <- z.pfem[subsetIndexes]
+    y.juv <- y.juv[subsetIndexes]
+    z.juv <- z.juv[subsetIndexes]
+    w.pfem <- w.pfem[subsetIndexes]
+    w.juv <- w.juv[subsetIndexes]
+                                        # end of dealing with less buffers
     
     top.pfem <- max(y.pfem+2*z.pfem)
     bottom.pfem <- min(y.pfem-2*z.pfem)
@@ -40,12 +57,6 @@ for(i in 1:length(species.list)){
 
     the.ylim <- c(min(c(bottom.pfem,bottom.juv)),max(c(top.pfem,top.juv))+0.2*max(c(top.pfem,top.juv)))
     the.xlim <- c(0,22)
-
-    w.pfem <- 0; w.juv <- 0
-    w.pfem[model.pfem$pvalues < 0.05] <- the.ylim[2]-0.05*the.ylim[2]
-    w.pfem[model.pfem$pvalues >= 0.05] <- 100
-    w.juv[model.juv$pvalues < 0.05] <- the.ylim[2]-0.05*the.ylim[2]
-    w.juv[model.juv$pvalues >= 0.05] <- 100
     
                                         # 3.2. actual plotting
     plot(x-shift,y.pfem,pch=20,xlim=the.xlim,ylim=the.ylim,xlab="buffer size",ylab="estimate",main=working.species,col="blue")
