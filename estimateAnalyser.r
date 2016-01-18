@@ -47,13 +47,16 @@ for (indexBuffer in  1:length(bufferNames)){
         w <- c(w,c(pvalue))
     }
 
-    orderedIndexes <- order(estimates,decreasing=TRUE)
-    estimates <- estimates[orderedIndexes]
-    estimate.errors <- estimate.errors[orderedIndexes]
-    plotLabels <- plotLabels[orderedIndexes]
-    w <- w[orderedIndexes] 
+    if (indexBuffer == 1) {
+        pfemOrderedIndexes <- order(estimates,decreasing=TRUE)
+    }
+    estimates <- estimates[pfemOrderedIndexes]
+    estimate.errors <- estimate.errors[pfemOrderedIndexes]
+    plotLabels <- plotLabels[pfemOrderedIndexes]
+    w <- w[pfemOrderedIndexes] 
     
     the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
+    the.xlim = c(-0.3,1.5) # forcing the x limit
     thexlab = bufferTag
     theylab = ""
     plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="pfem")
@@ -85,13 +88,16 @@ for (indexBuffer in  1:length(bufferNames)){
         w <- c(w,c(pvalue))
     }
 
-    orderedIndexes <- order(estimates,decreasing=TRUE)
-    estimates <- estimates[orderedIndexes]
-    estimate.errors <- estimate.errors[orderedIndexes]
-    plotLabels <- plotLabels[orderedIndexes]
-    w <- w[orderedIndexes] 
+    if (indexBuffer == 1) {
+        juvOrderedIndexes <- order(estimates,decreasing=TRUE)
+    }
+    estimates <- estimates[juvOrderedIndexes]
+    estimate.errors <- estimate.errors[juvOrderedIndexes]
+    plotLabels <- plotLabels[juvOrderedIndexes]
+    w <- w[juvOrderedIndexes] 
 
     the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
+    the.xlim = c(-0.45,0.8) # forcing the x limit
     thexlab = bufferTag
     theylab = ""
     plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="juv")
@@ -106,4 +112,4 @@ for (indexBuffer in  1:length(bufferNames)){
     points(z,length(estimates):1,pch=8)
     
     dev.off()
-}     
+}

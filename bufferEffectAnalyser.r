@@ -48,13 +48,14 @@ for(i in 1:length(species.list)){
     bottom.juv <- min(y.juv-2*z.juv)
 
     the.ylim <- c(min(c(bottom.pfem,bottom.juv)),max(c(top.pfem,top.juv))+0.2*max(c(top.pfem,top.juv)))
+    the.ylim <- c(-0.4,1.3) # forcing the ylim 
     the.xlim <- c(0,22)
 
                                         # this block should be after ylim has been properly defined, otherwise the position of the stars will be misplaced
     w.pfem <- 0; w.juv <- 0
-    w.pfem[model.pfem$pvalues < 0.05] <- the.ylim[2]-0.05*the.ylim[2]
+    w.pfem[model.pfem$pvalues < 0.05] <- the.ylim[2]-0.025*the.ylim[2]
     w.pfem[model.pfem$pvalues >= 0.05] <- 100
-    w.juv[model.juv$pvalues < 0.05] <- the.ylim[2]-0.05*the.ylim[2]
+    w.juv[model.juv$pvalues < 0.05] <- the.ylim[2]-0.025*the.ylim[2]
     w.juv[model.juv$pvalues >= 0.05] <- 100
     
                                         # dealing with less buffers part 2
@@ -74,6 +75,8 @@ for(i in 1:length(species.list)){
     legend(18,the.ylim[2],c("pfem","juv"),lty=c(1,1),lwd=c(2.5,2.5),pch=20,col=c("blue","red"))
     points(x-shift,w.pfem,col="blue",pch=8)
     points(x+shift,w.juv,col="red",pch=8)
+
+    abline(h=0,col="gray60") # adding a horizontal line
     
     dev.off()
   
