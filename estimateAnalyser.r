@@ -55,8 +55,8 @@ for (indexBuffer in  1:length(bufferNames)){
     plotLabels <- plotLabels[pfemOrderedIndexes]
     w <- w[pfemOrderedIndexes] 
     
-    the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
-    the.xlim = c(-0.3,1.5) # forcing the x limit
+    #the.xlim = c(min(estimates - 2*estimate.errors)-0.1*min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
+    the.xlim = c(-0.35,1.5) # forcing the x limit
     thexlab = bufferTag
     theylab = ""
     plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="pfem")
@@ -66,8 +66,10 @@ for (indexBuffer in  1:length(bufferNames)){
     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
 
     z <- 0
-    z[w < 0.05] <- the.xlim[2]-0.05*the.xlim[2]
+    z[(w < 0.05) & (estimates > 0.)] <- the.xlim[2]-0.05*the.xlim[2]
+    z[(w < 0.05) & (estimates < 0.)] <- the.xlim[1]+0.05*the.xlim[1]
     z[w >= 0.05] <- 100
+
     points(z,length(estimates):1,pch=8)
 
     dev.off()
@@ -96,8 +98,8 @@ for (indexBuffer in  1:length(bufferNames)){
     plotLabels <- plotLabels[juvOrderedIndexes]
     w <- w[juvOrderedIndexes] 
 
-    the.xlim = c(min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
-    the.xlim = c(-0.45,0.8) # forcing the x limit
+    #the.xlim = c(min(estimates - 2*estimate.errors)-0.1*min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
+    the.xlim = c(-0.5,0.8) # forcing the x limit
     thexlab = bufferTag
     theylab = ""
     plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="juv")
@@ -107,7 +109,8 @@ for (indexBuffer in  1:length(bufferNames)){
     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
 
     z <- 0
-    z[w < 0.05] <- the.xlim[2]-0.05*the.xlim[2]
+    z[(w < 0.05) & (estimates > 0.)] <- the.xlim[2]-0.05*the.xlim[2]
+    z[(w < 0.05) & (estimates < 0.)] <- the.xlim[1]+0.05*the.xlim[1]
     z[w >= 0.05] <- 100
     points(z,length(estimates):1,pch=8)
     
