@@ -1,4 +1,4 @@
-### this script computes for each species the effect of buffer size
+### this script computes for each species the effect of buffer size. to be run as source("bufferEffectAnalyser.r")
                                         # 0.1. user defined paths
 setwd <- getwd()
 pfem <- read.csv("data/P3-HS_thre_AUC.csv")
@@ -49,15 +49,18 @@ for(i in 1:length(species.list)){
     bottom.juv <- min(y.juv-2*z.juv)
 
     the.ylim <- c(min(c(bottom.pfem,bottom.juv)),max(c(top.pfem,top.juv))+0.2*max(c(top.pfem,top.juv)))
-    the.ylim <- c(-0.4,1.4) # forcing the ylim 
+    the.ylim <- c(-0.6,1.4) # forcing the ylim 
     the.xlim <- c(0,22)
 
                                         # this block should be after ylim has been properly defined, otherwise the position of the stars will be misplaced
     w.pfem <- 0; w.juv <- 0
-    w.pfem[model.pfem$pvalues < 0.05] <- the.ylim[2]-0.01*the.ylim[2]
+    w.pfem[(model.pfem$pvalues < 0.05) & (y.pfem > 0.)] <- the.ylim[2]-0.01*the.ylim[2]
+    w.pfem[(model.pfem$pvalues < 0.05) & (y.pfem < 0.)] <- the.ylim[1]+0.01*the.ylim[1]
     w.pfem[model.pfem$pvalues >= 0.05] <- 100
-    w.juv[model.juv$pvalues < 0.05] <- the.ylim[2]-0.01*the.ylim[2]
+    w.juv[(model.juv$pvalues < 0.05) & (y.juv > 0.)] <- the.ylim[2]-0.01*the.ylim[2]
+    w.juv[(model.juv$pvalues < 0.05) & (y.juv < 0.)] <- the.ylim[1]+0.01*the.ylim[1]
     w.juv[model.juv$pvalues >= 0.05] <- 100
+
     
                                         # dealing with less buffers part 2
     w.pfem <- w.pfem[subsetIndexes]
@@ -65,7 +68,7 @@ for(i in 1:length(species.list)){
                                         # dealing with less buffers part 2
 
                                         # 3.2. actual plotting
-    plot(x-shift,y.pfem,pch=20,xlim=the.xlim,ylim=the.ylim,xlab="buffer size",ylab="estimate",main=working.species,col="blue")
+    plot(x-shift,y.pfem,pch=20,xlim=the.xlim,ylim=the.ylim,xlab="buffer size",ylab="estimate",main=working.species,col="blue",panel.first=abline(h=0,col="gray60"))
     segments(x-shift,y.pfem-z.pfem,x-shift,y.pfem+z.pfem,lwd=2,col="blue")
     segments(x-shift,y.pfem-2*z.pfem,x-shift,y.pfem+2*z.pfem,lwd=1,col="blue")
     par(new=TRUE)
@@ -77,8 +80,5 @@ for(i in 1:length(species.list)){
     points(x-shift,w.pfem,col="blue",pch=8)
     points(x+shift,w.juv,col="red",pch=8)
 
-    abline(h=0,col="gray60") # adding a horizontal line
-    
-    dev.off()
-  
+    dev.off()  
 }             
