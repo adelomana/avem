@@ -90,7 +90,7 @@ with open(tableFile,'w') as f:
             Ntotal=Nyoung+Nadult+Nundefined
             f.write('%s\t%s\t%s\t%s\t'%(Nyoung,Nadult,Nundefined,Ntotal))
 
-            yearsString=','.join([str(element) for element in localYears])
+            yearsString=';'.join([str(element) for element in localYears])
             f.write(yearsString)
                         
             f.write('\n')
