@@ -50,8 +50,8 @@ for(i in 1:length(species.list)){
                                         # dealing with less buffers part 2
 
                                         # 3.2. actual plotting
-    plot(x,y.juv,pch=20,xlim=the.xlim,ylim=the.ylim,xlab="buffer size",ylab="estimate",main=working.species,col="black",panel.first=abline(h=0,col="gray60"))
-    segments(x,y.juv-z.juv,x,y.juv+z.juv,lwd=2,col="black")
+    plot(x,y.juv,pch=20,xlim=the.xlim,ylim=the.ylim,xlab="buffer size",ylab="estimate",main=working.species,col="black",panel.first=abline(h=0,col="gray60"),cex=2)
+    segments(x,y.juv-z.juv,x,y.juv+z.juv,lwd=4,col="black")
     segments(x,y.juv-2*z.juv,x,y.juv+2*z.juv,lwd=1,col="black")
 
     points(x,w.juv,col="black",pch=8)

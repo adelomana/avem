@@ -56,9 +56,10 @@ for (indexBuffer in  1:length(bufferNames)){
     the.xlim = c(-0.5,0.8) # forcing the x limit
     thexlab = bufferTag
     theylab = ""
-    plot(x=estimates,length(estimates):1, pch = 20, ylim = c(0, length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="juv")
+
+    plot(x=estimates,length(estimates):1,pch=20,ylim=c(0,length(estimates)+1),xlab=thexlab,ylab=theylab,xlim=the.xlim,yaxt="n",main="juv",abline(h=c(1:length(estimates)),col="lightgray",lty="dotted"),cex=2)
     abline(v=0, col = "grey50")
-    segments( estimates-estimate.errors, length(estimates):1, estimates+estimate.errors, length(estimates):1, lwd = 2)
+    segments( estimates-estimate.errors, length(estimates):1, estimates+estimate.errors, length(estimates):1, lwd = 4)
     segments( estimates-2*estimate.errors, length(estimates):1, estimates+2*estimate.errors, length(estimates):1, lwd = 1)
     axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
 
@@ -67,6 +68,6 @@ for (indexBuffer in  1:length(bufferNames)){
     z[(w < 0.05) & (estimates < 0.)] <- the.xlim[1]+0.05*the.xlim[1]
     z[w >= 0.05] <- 100
     points(z,length(estimates):1,pch=8)
-    
+
     dev.off()
 }
