@@ -1,7 +1,7 @@
 ### this script computes the estimate effect of habitat and productivity for each species
                                         # 0.1. user defined paths
 setwd <- getwd()
-juv <- read.csv("data/P4-HS_thre_AUC.csv")
+juv <- read.csv("data/P4-HS_raw_AUC.csv")
                                         # 0.2. loading common functions
 source("commonFunctions.r")
 
@@ -22,7 +22,7 @@ for(i in 1:length(species.list)){
     species.juv.models <- rbind( species.juv.models, data.frame(working.species,model.juv) )
 }
                                         # 4. building a figure for each buffer size
-bufferNames <- colnames(juv)[c(9,10,11,12,14)]
+bufferNames <- colnames(juv)[c(9,10,11,12,13,14)]
 
 for (indexBuffer in  1:length(bufferNames)){
     bufferTag <- bufferNames[indexBuffer]
@@ -67,6 +67,7 @@ for (indexBuffer in  1:length(bufferNames)){
     z[(w < 0.05) & (estimates > 0.)] <- the.xlim[2]-0.05*the.xlim[2]
     z[(w < 0.05) & (estimates < 0.)] <- the.xlim[1]+0.05*the.xlim[1]
     z[w >= 0.05] <- 100
+    
     points(z,length(estimates):1,pch=8)
 
     dev.off()
