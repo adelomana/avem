@@ -1,7 +1,9 @@
-### this script computes for each species the effect of buffer size. to be run as source("bufferEffectAnalyser.r")
+### this script computes for each species the effect of buffer size, stores it in a table and makes a figure. to be run as source("bufferEffectAnalyser.r")
                                         # 0.1. user defined paths
-setwd <- getwd()
+setwd("/Users/alomana/github/avem/")
 pjuv <- read.csv("data/P4-HS_raw_AUC.csv")
+outputFile='tables/formattedInfo.txt'
+formattedData=c()
                                         # 0.2. loading common functions
 source("commonFunctions.r")
                                         # MAIN
@@ -9,7 +11,7 @@ source("commonFunctions.r")
 species.list <- levels(pjuv$Species)
                                         # for each species
 for(i in 1:length(species.list)){
-#for(i in 1:1){
+#for(i in 1:3){
     working.species <- species.list[i]
     print(working.species)
                                         # 2. computing model
@@ -53,4 +55,12 @@ for(i in 1:length(species.list)){
     points(x,w.juv,col="black",pch=8)
 
     dev.off()  
-}             
+    
+    # formatting data for writing table
+    for(bufferIndex in 1:length(x)){
+      data2Write=c(working.species,x[bufferIndex],y.juv[bufferIndex],z.juv[bufferIndex])
+      formattedData <- rbind(formattedData,data2Write)
+    }
+}           
+colnames(formattedData)=c('species','buffer','estimate','standard deviation')
+write.table(formattedData,outputFile,sep='\t',quote=FALSE,row.names=FALSE)
