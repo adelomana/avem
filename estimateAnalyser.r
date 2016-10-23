@@ -2,10 +2,10 @@
 
 modelAnalysis=function(bufferNames,indexBuffer,label) {
   
-  bufferTag <- bufferNames[indexBuffer]
+  bufferTag=bufferNames[indexBuffer]
   
   # f.1. defining the plot
-  figureFileName <- paste("figures/estimates.",label,".",bufferTag,".pdf",sep="")
+  figureFileName=paste("figures/estimates.",label,".",bufferTag,".pdf",sep="")
   pdf(figureFileName)
   
   # f.2. defining the currently working model
@@ -17,33 +17,33 @@ modelAnalysis=function(bufferNames,indexBuffer,label) {
     stop("fatal error: unknown model label.")
   
   # f.3. going over the species
-  estimates <- c()
-  estimate.errors <- c()
-  plotLabels <- c()
-  w <- c()
+  estimates=c()
+  estimate.errors=c()
+  plotLabels=c()
+  w=c()
   for(i in 1:length(species.list)){
-    estimate <- workingModels[workingModels$working.species == species.list[i],]$estimates[indexBuffer]
-    estimates <- c(estimates,c(estimate))
-    estimate.error <- workingModels[workingModels$working.species == species.list[i],]$estimate.errors[indexBuffer]
-    estimate.errors <- c(estimate.errors,c(estimate.error))
-    plotLabels <- c(plotLabels,c(species.list[i]))
-    pvalue <- workingModels[workingModels$working.species == species.list[i],]$pvalues[indexBuffer]
-    w <- c(w,c(pvalue))
+    estimate=workingModels[workingModels$working.species == species.list[i],]$estimates[indexBuffer]
+    estimates=c(estimates,c(estimate))
+    estimate.error=workingModels[workingModels$working.species == species.list[i],]$estimate.errors[indexBuffer]
+    estimate.errors=c(estimate.errors,c(estimate.error))
+    plotLabels=c(plotLabels,c(species.list[i]))
+    pvalue=workingModels[workingModels$working.species == species.list[i],]$pvalues[indexBuffer]
+    w=c(w,c(pvalue))
   }
   
   # f.4. saving the order of the first iteration for following iterations
   temporalFileName=paste('tempo.',label,'.RData',sep='')
   if (indexBuffer == 1) {
-    orderedIndexes <- order(estimates,decreasing=TRUE)
+    orderedIndexes=order(estimates,decreasing=TRUE)
     save(orderedIndexes,file=temporalFileName)
   } else {
     load(temporalFileName)
   }
   
-  estimates <- estimates[orderedIndexes]
-  estimate.errors <- estimate.errors[orderedIndexes]
-  plotLabels <- plotLabels[orderedIndexes]
-  w <- w[orderedIndexes] 
+  estimates=estimates[orderedIndexes]
+  estimate.errors=estimate.errors[orderedIndexes]
+  plotLabels=plotLabels[orderedIndexes]
+  w=w[orderedIndexes] 
   
   #the.xlim = c(min(estimates - 2*estimate.errors)-0.1*min(estimates - 2*estimate.errors), max(estimates + 2*estimate.errors)+0.1*max(estimates + 2*estimate.errors))
   the.xlim = c(-0.5,0.8) # forcing the x limit
@@ -56,10 +56,10 @@ modelAnalysis=function(bufferNames,indexBuffer,label) {
   segments( estimates-2*estimate.errors, length(estimates):1, estimates+2*estimate.errors, length(estimates):1, lwd = 1)
   axis(side = 2, at = length(estimates):1, labels = plotLabels, tick = FALSE, las = 1)
   
-  z <- 0
-  z[(w < 0.05) & (estimates > 0.)] <- the.xlim[2]-0.05*the.xlim[2]
-  z[(w < 0.05) & (estimates < 0.)] <- the.xlim[1]+0.05*the.xlim[1]
-  z[w >= 0.05] <- 100
+  z=0
+  z[(w < 0.05) & (estimates > 0.)]=the.xlim[2]-0.05*the.xlim[2]
+  z[(w < 0.05) & (estimates < 0.)]=the.xlim[1]+0.05*the.xlim[1]
+  z[w >= 0.05]=100
   
   points(z,length(estimates):1,pch=8)
   
