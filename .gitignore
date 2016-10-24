@@ -10,3 +10,5 @@ figures/
 tables/table.txt
 
 *.RData
+
+.Rhistory
