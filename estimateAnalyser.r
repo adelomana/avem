@@ -1,6 +1,6 @@
 ### this script computes the estimate effect of habitat and productivity for each species
 
-modelAnalysis=function(bufferNames,indexBuffer,label) {
+figureGrapher=function(bufferNames,indexBuffer,label) {
   
   bufferTag=bufferNames[indexBuffer]
   
@@ -11,8 +11,10 @@ modelAnalysis=function(bufferNames,indexBuffer,label) {
   # f.2. defining the currently working model
   if (label == "juv") {
     workingModels=species.juv.models
+    species.list=species.list.juv
   } else if (label == "pfem") {
     workingModels=species.pfem.models
+    species.list=species.list.pfem
   } else
     stop("fatal error: unknown model label.")
   
@@ -70,34 +72,41 @@ modelAnalysis=function(bufferNames,indexBuffer,label) {
 # 0.1. user defined paths
 setwd("/Users/adriandelomana/git/avem/")
 juv=read.csv("data/P4-HS_raw_AUC.csv")
-pfem=read.csv("data/P3-HS_raw_AUC.csv")
+pfem=read.csv("data/P3-HS_raw_AUC.v20161023.csv")
 
 # 0.2. loading common functions
 source("commonFunctions.r")
 
 # MAIN
 # 1. defining some initial variables
-species.list=levels(juv$Species)
+species.list.juv=levels(juv$Species)
+species.list.pfem=levels(pfem$Species)
+
 species.juv.models=data.frame()
 species.pfem.models=data.frame()
 
-# 1.1. for each species 
-for(i in 1:length(species.list)){
-#!for(i in 1:1){
-    working.species=species.list[i]
+# 1.1. for each species (juv list) 
+for(i in 1:length(species.list.juv)){
+    working.species=species.list.juv[i]
     print(working.species)
-    
-    # 2. computing model
+    # computing model
     print("computing model for juv...")
     model.juv=model.calculator(fitness.data=juv,working.species,label="age")
     print(model.juv)
-    print("computing model for pfem...")
-    model.pfem=model.calculator(fitness.data=pfem,working.species,label="patch")
-    print(model.pfem)
-    
-    # 3. appending the computed models into a list
+    # appending the computed models into a list
     species.juv.models=rbind(species.juv.models,data.frame(working.species,model.juv))
-    species.pfem.models=rbind(species.pfem.models,data.frame(working.species,model.pfem))
+}
+
+# 1.2. for each species (pfem list) 
+for(i in 1:length(species.list.pfem)){
+  working.species=species.list.pfem[i]
+  print(working.species)
+  # computing model
+  print("computing model for pfem...")
+  model.pfem=model.calculator(fitness.data=pfem,working.species,label="patch")
+  print(model.pfem)
+  # appending the computed models into a list
+  species.pfem.models=rbind(species.pfem.models,data.frame(working.species,model.pfem))
 }
       
 # 4. building a figure for each buffer size
@@ -106,9 +115,9 @@ bufferNames=colnames(juv)[c(9,10,11,12,13,14)]
 for (indexBuffer in  1:length(bufferNames)){
     
     # 4.1. performing analysis for juv model
-    modelAnalysis(bufferNames,indexBuffer,'juv')
+    figureGrapher(bufferNames,indexBuffer,'juv')
     
     # 4.2. performing analysis for pfem model
-    modelAnalysis(bufferNames,indexBuffer,'pfem')
+    figureGrapher(bufferNames,indexBuffer,'pfem')
     
 }
